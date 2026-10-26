@@ -19,14 +19,15 @@ nav a{padding:5px 14px;border:1px solid var(--line);border-radius:999px;color:va
 section{margin-top:28px;scroll-margin-top:12px}
 h2{font-size:20px;color:var(--name);margin:0 0 12px;display:flex;align-items:baseline;gap:8px}
 h2 small{font-size:13px;color:var(--muted);font-weight:400}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.cell{aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px;padding:12px;text-align:left;
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:12px}
+.cell{aspect-ratio:4/1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:10px 16px;text-align:left;
 background-color:var(--panel);background-size:cover;background-position:center;color:var(--text);font:inherit;border:1px solid var(--line);border-radius:12px;cursor:pointer;overflow:hidden}
 .cell:hover{border-color:var(--text)}
-.cell .n{font-size:15px;font-weight:700;color:var(--name);line-height:1.35}
-.cell .m{font-size:12px;line-height:1.45;color:var(--muted)}
+.cell .n{font-size:16px;font-weight:700;color:var(--name);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell .m{font-size:12px;line-height:1.45;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cell.empty{opacity:.55}
-.cell.big{justify-content:center;align-items:center;text-align:center}
+.cell.big{flex-direction:row;justify-content:space-between;align-items:center;gap:12px}
+.cell.big .m{flex:none}
 .cell.big .n{font-size:22px}
 .crumb{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:4px 0 16px;color:var(--muted);font-size:14px}
 .crumb button{background:none;border:0;padding:2px 4px;color:var(--text);font:inherit;cursor:pointer;text-decoration:underline}
@@ -50,14 +51,41 @@ dialog p{margin:0 0 12px;white-space:pre-line}
 #close{margin-top:4px;padding:6px 16px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--text);font:inherit;cursor:pointer}
 .r{color:var(--red)}.y{color:var(--yellow)}.o{color:var(--orange)}
 #empty{color:var(--muted);text-align:center;padding:32px 0}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 4px}
+.head h1{margin:0}
+#lay{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+#lay button{padding:3px 12px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--text);font:inherit;font-size:13px;cursor:pointer}
+#lay button[aria-pressed="true"]{border-color:var(--text);color:var(--name);background:var(--panel)}
+body[data-lay="8"] .grid{grid-template-columns:repeat(auto-fill,minmax(min(440px,100%),1fr))}
+body[data-lay="8"] .cell{aspect-ratio:8/1;flex-direction:row;align-items:center;justify-content:flex-start;gap:14px;padding:6px 16px}
+body[data-lay="8"] .cell .n{flex:none;max-width:45%}
+body[data-lay="8"] .cell .m{flex:1;min-width:0}
+body[data-lay="8"] .cell.big{justify-content:space-between}
+body[data-lay="8"] .cell.big .m{flex:none}
+body[data-lay="1"] .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+body[data-lay="1"] .cell{aspect-ratio:1;justify-content:space-between;gap:6px;padding:12px}
+body[data-lay="1"] .cell .n{white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+body[data-lay="1"] .cell .m{white-space:normal}
+body[data-lay="1"] .ing{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body[data-lay="1"] .pl{display:none}
+body[data-lay="1"] .cell.big{flex-direction:column;justify-content:center;align-items:center;text-align:center}
+@media(max-width:560px){body[data-lay="1"] .grid{gap:6px}body[data-lay="1"] .cell{padding:8px}body[data-lay="1"] .cell .n{font-size:12px}body[data-lay="1"] .cell .m{font-size:10px}body[data-lay="1"] .cell.big .n{font-size:15px}}
+.photo{display:block;max-width:100%;max-height:320px;margin:0 0 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);object-fit:contain}
+#fp{display:block;max-width:100%;max-height:160px;margin:6px 0 8px;border:1px solid var(--line);border-radius:8px}
+#fp[hidden],#fpx[hidden]{display:none}
+#fpx{margin:0 0 10px;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--text);font:inherit;font-size:13px;cursor:pointer}
 </style>
 </head>
 <body>
 <main>
-  <h1>에고 기프트 조합식 정리</h1>
+  <div class="head"><h1>에고 기프트 조합식 정리</h1>
+    <div id="lay" role="group" aria-label="UI 변경"><span>UI 변경</span>
+      <button data-l="8" title="가로로 아주 긴 막대 (8:1)">8:1</button>
+      <button data-l="4" title="가로로 긴 막대 (4:1)">4:1</button>
+      <button data-l="1" title="정사각형, 한 줄에 4개 (1:1)">1:1</button></div></div>
   <p class="sub">키워드를 누르면 4티어가 나오고, 기프트와 재료를 누르면 조합식이 이어서 열립니다. 추가한 기프트는 이 브라우저에 저장됩니다.</p>
   <input id="q" type="search" placeholder="이름이나 효과로 검색" aria-label="검색">
-  <div class="bar"><button id="add">+ 기프트 추가</button><button id="data">데이터 내보내기·불러오기</button></div>
+  <div class="bar"><button id="add">+ 기프트 추가</button><button id="addk">+ 키워드 추가</button><button id="data">데이터 내보내기·불러오기</button></div>
   <div id="app"></div>
 </main>
 <dialog id="fd"><h3 id="fh">기프트 추가</h3>
@@ -66,9 +94,16 @@ dialog p{margin:0 0 12px;white-space:pre-line}
 <label>티어<select id="ft"><option value="">자동 (다른 기프트의 재료가 아니면 4티어)</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
 <label>조합식 (한 줄에 재료 하나, 또는 + 로 구분)<textarea id="fr" rows="4"></textarea></label>
 <label>효과 (한 줄이 한 문단)<textarea id="fx" rows="8"></textarea></label>
+<label>사진 올리기 (고르면 작게 줄여서 저장돼요)<input id="fi" type="file" accept="image/*"></label>
+<label>또는 이미지 주소 (깃허브에 올린 사진 경로, 예: images/치성.png)<input id="fu" placeholder="images/이름.png"></label>
+<img id="fp" alt="" hidden><button id="fpx" type="button" hidden>사진 지우기</button>
 <p id="fe" class="r"></p>
 <div class="row"><button id="fs">저장</button><button id="fc2">취소</button></div></dialog>
-<dialog id="dd"><h3>데이터</h3><p class="muted">내가 추가·수정한 기프트입니다. 복사해서 보내주세요. 붙여넣고 불러오기도 됩니다.</p>
+<dialog id="kd"><h3>키워드 추가</h3>
+<label>키워드 이름 (화상, 출혈처럼 가장 위에 나오는 항목)<input id="kn" maxlength="20"></label>
+<p id="ke" class="r"></p>
+<div class="row"><button id="ks">추가</button><button id="kc">취소</button></div></dialog>
+<dialog id="dd"><h3>데이터</h3><p class="muted">내가 추가·수정한 기프트와 키워드입니다. 복사해서 보내주세요. 붙여넣고 불러오기도 됩니다.</p>
 <textarea id="dx" rows="12"></textarea><p id="dm" class="muted"></p>
 <div class="row"><button id="dc">복사</button><button id="di">불러오기</button><button id="dz">닫기</button></div></dialog>
 <script>
@@ -80,10 +115,13 @@ const re=new RegExp(Object.keys(map).sort((a,b)=>b.length-a.length).join("|"),"g
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const color=s=>esc(s).replace(re,k=>`<span class="${map[k]}">${k}</span>`);
 const $=id=>document.getElementById(id);
-const ORDER=["화상","출혈","진동","파열","침잠","호흡","충전"];
-const BASE=GIFTS.filter(g=>ORDER.includes(g.분류)),BASENAMES=new Set(BASE.map(g=>g.이름));
+const BASEORDER=["화상","출혈","진동","파열","침잠","호흡","충전"];
+let cats=[];try{const c=JSON.parse(localStorage.getItem("egoCats")||"[]");if(Array.isArray(c))cats=[...new Set(c.filter(x=>typeof x==="string"&&x&&!BASEORDER.includes(x)))]}catch(e){}
+let ORDER=BASEORDER.concat(cats);
+const storeCats=()=>{try{localStorage.setItem("egoCats",JSON.stringify(cats));return true}catch(e){return false}};
+const BASE=GIFTS.filter(g=>BASEORDER.includes(g.분류)),BASENAMES=new Set(BASE.map(g=>g.이름));
 let user={};try{user=JSON.parse(localStorage.getItem("egoUser")||"{}")}catch(e){}
-const store=()=>{try{localStorage.setItem("egoUser",JSON.stringify(user))}catch(e){}};
+const store=()=>{try{localStorage.setItem("egoUser",JSON.stringify(user));return true}catch(e){return false}};
 let items=[],byName={},used=new Set();
 function rebuild(){
   items=BASE.map(g=>user[g.이름]||g).concat(Object.values(user).filter(g=>!BASENAMES.has(g.이름)));
@@ -94,7 +132,7 @@ const isTop=g=>g.티어?String(g.티어)==="4":!used.has(g.이름);
 const tops=k=>items.filter(g=>g.분류===k&&isTop(g));
 let path=[],q="";
 const cell=g=>`<button class="cell${g.조합식.length?"":" empty"}" data-g="${esc(g.이름)}"${g.이미지?` style="background-image:linear-gradient(rgba(21,22,26,.7),rgba(21,22,26,.9)),url('${esc(g.이미지)}')"`:""}>
-  <span class="n">${esc(g.이름)}</span><span class="m">${g.조합식.length?g.조합식.map(esc).join("<br>"):"조합식 미입력"}</span></button>`;
+  <span class="n">${esc(g.이름)}</span><span class="m"${g.조합식.length?` title="${g.조합식.map(esc).join(" + ")}"`:""}>${g.조합식.length?g.조합식.map(m=>`<span class="ing">${esc(m)}</span>`).join('<span class="pl"> + </span>'):"조합식 미입력"}</span></button>`;
 const crumbs=()=>`<div class="crumb"><button data-c="-1">전체</button>`+path.map((p,i)=>` › <button data-c="${i}">${esc(p)}</button>`).join("")+`</div>`;
 function render(){
   let h="";
@@ -102,22 +140,73 @@ function render(){
     const r=items.filter(g=>(g.이름+g.효과.join(" ")).includes(q));
     h=r.length?`<div class="grid">${r.map(cell).join("")}</div>`:`<div id="empty">검색 결과가 없습니다.</div>`;
   }else if(!path.length){
-    h=`<div class="grid">`+ORDER.map(k=>`<button class="cell big" data-k="${k}"><span class="n ${map[k]||""}">${k}</span><span class="m">4티어 ${tops(k).length}개</span></button>`).join("")+`</div>`;
+    h=`<div class="grid">`+ORDER.map(k=>`<button class="cell big" data-k="${esc(k)}"><span class="n ${map[k]||""}">${esc(k)}</span><span class="m">4티어 ${tops(k).length}개</span></button>`).join("")+`</div>`;
   }else if(path.length===1){
     const t=tops(path[0]);
-    h=crumbs()+(t.length?`<div class="grid">${t.map(cell).join("")}</div>`:`<div id="empty">아직 기프트가 없습니다. 위의 “+ 기프트 추가”로 넣어보세요.</div>`);
+    h=crumbs()+(t.length?`<div class="grid">${t.map(cell).join("")}</div>`:`<div id="empty">아직 기프트가 없습니다. 위의 “+ 기프트 추가”로 넣어보세요.</div>`)+(cats.includes(path[0])?`<div class="row"><button data-a="delcat">이 키워드 삭제</button></div>`:"");
   }else{
     const g=byName[path[path.length-1]];
     h=crumbs()+`<div class="detail"><h2 class="gt">${esc(g.이름)}</h2>`+
+      (g.이미지?`<img class="photo" src="${esc(g.이미지)}" alt="${esc(g.이름)}">`:"")+
       (g.조합식.length?`<div class="recipe">`+g.조합식.map(m=>byName[m]?`<button class="chip" data-g="${esc(m)}">${esc(m)}</button>`:`<span class="chip">${esc(m)}</span>`).join(" + ")+`</div>`:`<p class="muted">조합식 미입력</p>`)+
       g.효과.map(p=>`<p>${color(p)}</p>`).join("")+
       `<div class="row"><button data-a="edit">수정</button>`+(user[g.이름]?`<button data-a="del">${BASENAMES.has(g.이름)?"수정 되돌리기":"삭제"}</button>`:"")+`</div></div>`;
   }
   $("app").innerHTML=h;window.scrollTo(0,0);
 }
-let editing=null;
+let editing=null,pic="";
+const showPic=()=>{const p=$("fp");
+  if(pic){p.src=pic;p.hidden=false;$("fpx").hidden=false}
+  else{p.removeAttribute("src");p.hidden=true;$("fpx").hidden=true}};
+/* 부적절한 이미지 검사: nsfw 폴더의 파일을 처음 필요할 때 한 번만 불러와요 */
+let nm=null;
+const loadJs=src=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=()=>no(new Error(src));document.head.appendChild(s)});
+async function engine(){
+  if(nm)return nm;
+  for(const f of ["tf.min.js","model.min.js","group1-shard1of1.min.js","nsfwjs.min.js"])await loadJs("nsfw/"+f);
+  nm=await nsfwjs.load("MobileNetV2");return nm;
+}
+async function blocked(el){
+  const p=await (await engine()).classify(el),v={};
+  p.forEach(x=>v[x.className]=x.probability);
+  return (v.Porn||0)+(v.Hentai||0)>=.5||(v.Sexy||0)>=.85;
+}
+const NOPE="부적절할 수 있는 이미지로 판단되어 저장하지 않았어요.";
+const NOENGINE="이미지 검사 도구를 불러오지 못해서 사진을 저장하지 않았어요. nsfw 폴더가 올라가 있는지 확인해 주세요.";
+const setPic=v=>{pic=v;showPic()};
+$("fi").onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  const fe=$("fe");fe.textContent="사진을 검사하는 중이에요…";setPic("");
+  try{
+    const src=await new Promise((ok,no)=>{const rd=new FileReader();rd.onload=()=>ok(rd.result);rd.onerror=no;rd.readAsDataURL(f)});
+    const im=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>no(new Error("img"));i.src=src});
+    const s=Math.min(1,480/Math.max(im.width,im.height)),c=document.createElement("canvas");
+    c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));
+    const x=c.getContext("2d");x.fillStyle="#1f2026";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+    if(await blocked(c)){fe.textContent=NOPE;$("fi").value="";return}
+    $("fu").value="";fe.textContent="";setPic(c.toDataURL("image/jpeg",.82));
+  }catch(err){
+    fe.textContent=err&&err.message==="img"?"이미지를 읽지 못했어요. 다른 파일로 시도해 주세요.":NOENGINE;$("fi").value="";
+  }
+};
+$("fu").onchange=async e=>{
+  const u=e.target.value.trim(),fe=$("fe");$("fi").value="";
+  if(!u){setPic("");fe.textContent="";return}
+  if(/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(u)){setPic("");fe.textContent="이미지 주소는 저장소 안의 경로만 쓸 수 있어요. 예: images/이름.png";return}
+  fe.textContent="사진을 검사하는 중이에요…";setPic("");
+  try{
+    const im=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>no(new Error("img"));i.src=u});
+    if(await blocked(im)){fe.textContent=NOPE;e.target.value="";return}
+    fe.textContent="";setPic(u);
+  }catch(err){
+    fe.textContent=err&&err.message==="img"?"그 경로에서 이미지를 찾지 못했어요. 파일 이름과 폴더를 확인해 주세요.":NOENGINE;
+  }
+};
+$("fpx").onclick=()=>{pic="";$("fu").value="";$("fi").value="";showPic()};
 function openForm(g){
   editing=g?g.이름:null;
+  pic=g&&g.이미지?g.이미지:"";
+  $("fi").value="";$("fu").value=pic.startsWith("data:")?"":pic;showPic();
   $("fh").textContent=g?"기프트 수정":"기프트 추가";
   $("fn").value=g?g.이름:"";
   $("fc").value=g?g.분류:(path[0]||ORDER[0]);
@@ -126,7 +215,8 @@ function openForm(g){
   $("fx").value=g?g.효과.join("\n"):"";
   $("fe").textContent="";$("fd").showModal();
 }
-$("fc").innerHTML=ORDER.map(c=>`<option>${c}</option>`).join("");
+function syncCats(){ORDER=BASEORDER.concat(cats);const cur=$("fc").value;$("fc").innerHTML=ORDER.map(c=>`<option>${esc(c)}</option>`).join("");if(ORDER.includes(cur))$("fc").value=cur}
+syncCats();
 $("fs").onclick=()=>{
   const name=$("fn").value.trim();
   if(!name){$("fe").textContent="이름을 입력해 주세요.";return}
@@ -134,28 +224,68 @@ $("fs").onclick=()=>{
   const g={이름:name,분류:$("fc").value,조합식:$("fr").value.split(/\n|\+/).map(s=>s.trim()).filter(Boolean),
     효과:$("fx").value.split("\n").map(s=>s.trim()).filter(Boolean)};
   if($("ft").value)g.티어=+$("ft").value;
-  if(editing&&editing!==name&&!BASENAMES.has(editing))delete user[editing];
-  user[name]=g;store();rebuild();$("fd").close();q="";$("q").value="";path=[g.분류,name];render();
+  if(pic)g.이미지=pic;
+  const prevName=editing&&editing!==name&&!BASENAMES.has(editing)?user[editing]:undefined,prev=user[name];
+  if(prevName)delete user[editing];
+  user[name]=g;
+  if(!store()){
+    if(prev)user[name]=prev;else delete user[name];
+    if(prevName)user[editing]=prevName;
+    $("fe").textContent="저장 공간이 부족해요. 사진을 지우거나, 사진 대신 이미지 주소(깃허브에 올린 사진 경로)를 써 주세요.";return;
+  }
+  rebuild();$("fd").close();q="";$("q").value="";path=[g.분류,name];render();
 };
 $("fc2").onclick=()=>$("fd").close();
 $("add").onclick=()=>openForm(null);
-$("data").onclick=()=>{$("dx").value=JSON.stringify(Object.values(user),null,1);$("dm").textContent="";$("dd").showModal()};
+$("addk").onclick=()=>{$("kn").value="";$("ke").textContent="";$("kd").showModal();$("kn").focus()};
+$("kc").onclick=()=>$("kd").close();
+$("kn").onkeydown=e=>{if(e.key==="Enter")$("ks").click()};
+$("ks").onclick=()=>{
+  const n=$("kn").value.trim();
+  if(!n){$("ke").textContent="키워드 이름을 입력해 주세요.";return}
+  if(ORDER.includes(n)){$("ke").textContent="이미 있는 키워드예요.";return}
+  cats.push(n);
+  if(!storeCats()){cats.pop();$("ke").textContent="저장 공간이 부족해서 추가하지 못했어요.";return}
+  syncCats();$("kd").close();q="";$("q").value="";path=[n];render();
+};
+$("data").onclick=()=>{$("dx").value=JSON.stringify({키워드:cats,기프트:Object.values(user)},null,1);$("dm").textContent="";$("dd").showModal()};
 $("dz").onclick=()=>$("dd").close();
 $("dc").onclick=async()=>{
   try{await navigator.clipboard.writeText($("dx").value);$("dm").textContent="복사했습니다."}
   catch(e){$("dx").select();$("dm").textContent="자동 복사가 막혀 있어요. 선택된 글자를 직접 복사해 주세요."}
 };
-$("di").onclick=()=>{
-  try{
-    const arr=JSON.parse($("dx").value);let n=0;
-    (Array.isArray(arr)?arr:[arr]).forEach(g=>{
-      if(g&&g.이름&&ORDER.includes(g.분류)){user[g.이름]={이름:g.이름,분류:g.분류,조합식:g.조합식||[],효과:g.효과||[],...(g.티어?{티어:g.티어}:{})};n++}
-    });
-    store();rebuild();render();$("dm").textContent=`${n}개를 불러왔습니다.`;
-  }catch(e){$("dm").textContent="형식이 맞지 않아 불러오지 못했습니다."}
+$("di").onclick=async()=>{
+  let arr;
+  try{arr=JSON.parse($("dx").value)}catch(e){$("dm").textContent="형식이 맞지 않아 불러오지 못했습니다.";return}
+  let n=0,dropped=0;$("dm").textContent="불러오는 중이에요…";
+  const isObj=!!arr&&!Array.isArray(arr)&&Array.isArray(arr.기프트);
+  const list=isObj?arr.기프트:(Array.isArray(arr)?arr:[arr]);
+  const addCat=c=>{if(typeof c==="string"){c=c.trim();if(c&&c.length<=20&&!ORDER.includes(c)){cats.push(c);syncCats()}}};
+  if(isObj&&Array.isArray(arr.키워드))arr.키워드.forEach(addCat);
+  for(const g of list){
+    if(!(g&&g.이름&&typeof g.분류==="string"))continue;
+    addCat(g.분류);if(!ORDER.includes(g.분류))continue;
+    const o={이름:g.이름,분류:g.분류,조합식:g.조합식||[],효과:g.효과||[],...(g.티어?{티어:g.티어}:{})};
+    if(g.이미지){
+      try{
+        const u=String(g.이미지);
+        if(!/^data:image\/(jpeg|png|webp);base64,/.test(u)&&/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(u))throw 0;
+        const im=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=u});
+        if(await blocked(im))throw 0;
+        o.이미지=u;
+      }catch(e){dropped++}
+    }
+    user[g.이름]=o;n++;
+  }
+  store();storeCats();rebuild();render();
+  $("dm").textContent=`${n}개를 불러왔습니다.`+(dropped?` 사진 ${dropped}장은 검사에서 걸러졌거나 읽지 못해 빼고 불러왔어요.`:"");
 };
 $("app").onclick=e=>{
   const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.a==="delcat"){const k=path[0];
+    if(items.some(g=>g.분류===k)){alert("이 키워드에 기프트가 남아 있어요. 기프트를 먼저 지워 주세요.");return}
+    if(!confirm(`'${k}' 키워드를 삭제할까요?`))return;
+    cats=cats.filter(c=>c!==k);storeCats();syncCats();path=[];render();return}
   if(b.dataset.a==="edit"){openForm(byName[path[path.length-1]]);return}
   if(b.dataset.a==="del"){const n=path[path.length-1];delete user[n];store();rebuild();if(!byName[n])path=path.slice(0,-1);render();return}
   if(b.dataset.k)path=[b.dataset.k];
@@ -167,6 +297,13 @@ $("app").onclick=e=>{
   render();
 };
 $("q").oninput=e=>{q=e.target.value.trim();render()};
+let lay="4";
+try{const v=localStorage.getItem("egoLayout");if(["8","4","1"].includes(v))lay=v}catch(e){}
+function setLay(v){lay=v;document.body.dataset.lay=v;
+  document.querySelectorAll("#lay button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.l===v)));
+  try{localStorage.setItem("egoLayout",v)}catch(e){}}
+$("lay").onclick=e=>{const b=e.target.closest("button");if(b)setLay(b.dataset.l)};
+setLay(lay);
 rebuild();render();
 </script>
 </body>
